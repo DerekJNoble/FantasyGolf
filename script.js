@@ -50,7 +50,7 @@ function saveTeams() {
 // Fetch OWGR rankings
 let rankingsCache = null;
 async function fetchRankings() {
-    const RANKINGS_URL = `https://api.sportradar.com/golf/trial/v3/en/rankings.json?api_key=${API_KEY}`;
+    const RANKINGS_URL = `https://api.sportradar.com/golf/trial/v3/en/rankings.json?api_key=${wiaNv3mo28nTGdaxI1gPtWYT7xs78MhkyVKUv4KG}`;
     try {
         const response = await fetch(RANKINGS_URL);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -99,9 +99,9 @@ function updateTeamName(index, newName) {
 }
 
 // Sportradar API configuration
-const API_KEY = "YOUR_API_KEY"; // Replace with your valid key
-const TOURNAMENT_ID = "YOUR_TOURNAMENT_ID"; // Replace with 2025 PGA Championship ID
-const API_URL = `https://api.sportradar.com/golf/trial/v3/en/tournaments/${TOURNAMENT_ID}/leaderboard.json?api_key=${API_KEY}`;
+const API_KEY = "wiaNv3mo28nTGdaxI1gPtWYT7xs78MhkyVKUv4KG"; // Replace with your valid key
+const TOURNAMENT_ID = "680ab97b-627d-4e61-81e6-32dfbbc73e14"; // Replace with 2025 PGA Championship ID
+const API_URL = `https://api.sportradar.com/golf/trial/v3/en/tournaments/${680ab97b-627d-4e61-81e6-32dfbbc73e14}/leaderboard.json?api_key=${wiaNv3mo28nTGdaxI1gPtWYT7xs78MhkyVKUv4KG}`;
 
 // Fetch and update live results (index.html)
 async function updateResults() {
