@@ -1,2 +1,0 @@
-# FantasyGolf
-Fantasy Golf
