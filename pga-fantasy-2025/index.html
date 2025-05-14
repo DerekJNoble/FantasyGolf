@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PGA Championship 2025 Fantasy Pool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>PGA Championship 2025 Fantasy Pool</h1>
+    </header>
+    <div class="container">
+        <section class="event-details">
+            <h2>Event Information</h2>
+            <p><strong>Date:</strong> May 15-18, 2025</p>
+            <p><strong>Location:</strong> Quail Hollow Club, Charlotte, North Carolina</p>
+            <p><strong>Format:</strong> 7 teams, each with 6 players (5 active, 1 reserve). Snake draft. Winner based on lowest total team position (sum of 5 active players’ current positions). Missed cuts assigned 71st place. Reserve replaces withdrawals before Round 1.</p>
+            <p>Live scoring updates every 60 seconds from Sportradar API. <a href="draft.html">Go to Draft Page</a></p>
+        </section>
+        <section class="teams">
+            <h2>Team Rosters</h2>
+            <table id="rosters-table">
+                <thead>
+                    <tr>
+                        <th>Team</th>
+                        <th>Player 1</th>
+                        <th>Player 2</th>
+                        <th>Player 3</th>
+                        <th>Player 4</th>
+                        <th>Player 5</th>
+                        <th>Reserve</th>
+                    </tr>
+                </thead>
+                <tbody id="rosters-body">
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
+        </section>
+        <section class="results">
+            <h2>Live Pool Results</h2>
+            <p>Updates every 60 seconds. Missed cuts assigned 71st place.</p>
+            <table id="results-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Team</th>
+                        <th>Total Position</th>
+                        <th>Total Score</th>
+                        <th>Player Details</th>
+                    </tr>
+                </thead>
+                <tbody id="results-body">
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+    <footer>
+        <p>© 2025 PGA Championship Fantasy Pool | Powered by Sportradar API</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
