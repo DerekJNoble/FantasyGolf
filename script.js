@@ -7732,7 +7732,7 @@ const availablePlayers = {
       "name": "Greyserman, Max"
     }
   ]
-};
+];
 
 // Initialize teams
 let teams = JSON.parse(localStorage.getItem("teams")) || [
@@ -7747,7 +7747,12 @@ let teams = JSON.parse(localStorage.getItem("teams")) || [
 
 // Save teams to localStorage
 function saveTeams() {
-    localStorage.setItem("teams", JSON.stringify(teams));
+    try {
+        localStorage.setItem("teams", JSON.stringify(teams));
+        console.log("Teams saved to localStorage:", teams);
+    } catch (error) {
+        console.error("Error saving to localStorage:", error);
+    }
 }
 
 // Populate team rosters table (index.html)
@@ -7765,7 +7770,7 @@ function populateRosters() {
             <td>${team.players[3] || '-'}</td>
             <td>${team.players[4] || '-'}</td>
             <td class="reserve">${team.reserve || '-'}</td>
-<|control18|>        `;
+        `;
         tbody.appendChild(row);
     });
 }
@@ -7780,8 +7785,8 @@ function updateTeamName(index, newName) {
 
 // Sportradar API configuration (replace with your credentials)
 const API_KEY = "wiaNv3mo28nTGdaxI1gPtWYT7xs78MhkyVKUv4KG";
-const TOURNAMENT_ID = "2eadcc26-4378-4d53-bd0a-f73962983137";
-const API_URL = `https://api.sportradar.com/golf/tournaments/${2eadcc26-4378-4d53-bd0a-f73962983137}/leaderboard.json?api_key=${wiaNv3mo28nTGdaxI1gPtWYT7xs78MhkyVKUv4KG}`;
+const TOURNAMENT_ID = "680ab97b-627d-4e61-81e6-32dfbbc73e14";
+const API_URL = `https://api.sportradar.com/golf/trial/v3/en/tournaments/${680ab97b-627d-4e61-81e6-32dfbbc73e14}/leaderboard.json?api_key=${wiaNv3mo28nTGdaxI1gPtWYT7xs78MhkyVKUv4KG}`;
 
 // Fetch and update live results (index.html)
 async function updateResults() {
@@ -7789,6 +7794,7 @@ async function updateResults() {
     if (!tbody) return;
     try {
         const response = await fetch(API_URL);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
         const leaderboard = data.leaderboard || [];
 
@@ -7836,7 +7842,7 @@ async function updateResults() {
         });
     } catch (error) {
         console.error("Error fetching API data:", error);
-        tbody.innerHTML = "<tr><td colspan='5'>Error loading live scores. Please try again later.</td></tr>";
+        tbody.innerHTML = "<tr><td colspan='5'>Error loading live scores: ${error.message}. Please check API key and Tournament ID.</td></tr>";
     }
 }
 
@@ -7871,7 +7877,7 @@ function initializeDraft() {
             });
         }
 
-        // Populate draft table
+        // Populate draft table with dropdowns
         tbody.innerHTML = "";
         draftOrder.forEach((pick, index) => {
             const row = document.createElement("tr");
@@ -7879,34 +7885,54 @@ function initializeDraft() {
                 <td>${pick.round}</td>
                 <td>${index + 1}</td>
                 <td>${teams[pick.teamIndex].name}</td>
-                <td><input type="text" class="player-input" data-pick="${index}" placeholder="Enter player"></td>
+                <td>
+                    <select class="player-select" data-pick="${index}">
+                        <option value="">Select Player</option>
+                        ${availablePlayers
+                            .filter(p => !teams.flatMap(t => [...t.players, t.reserve]).includes(p))
+                            .map(p => `<option value="${p}">${p}</option>`)
+                            .join("")}
+                    </select>
+                </td>
             `;
             tbody.appendChild(row);
         });
 
-        // Add autocomplete to inputs
-        const inputs = document.querySelectorAll(".player-input");
-        inputs.forEach(input => {
-            input.addEventListener("input", () => {
-                const value = input.value.toLowerCase();
-                const suggestions = availablePlayers.filter(p => p.toLowerCase().includes(value) && !teams.flatMap(t => [...t.players, t.reserve]).includes(p));
-                console.log("Suggestions for", value, ":", suggestions); // Replace with UI dropdown
-            });
-            input.addEventListener("change", () => {
-                const pickIndex = parseInt(input.dataset.pick);
+        // Add change event to dropdowns
+        const selects = document.querySelectorAll(".player-select");
+        selects.forEach(select => {
+            select.addEventListener("change", () => {
+                const pickIndex = parseInt(select.dataset.pick);
                 const teamIndex = draftOrder[pickIndex].teamIndex;
                 const round = draftOrder[pickIndex].round;
-                const player = input.value.trim();
-                if (player && availablePlayers.includes(player) && !teams.flatMap(t => [...t.players, t.reserve]).includes(player)) {
+                const player = select.value;
+
+                if (player && !teams.flatMap(t => [...t.players, t.reserve]).includes(player)) {
                     if (round < 6) {
                         teams[teamIndex].players.push(player);
                     } else {
                         teams[teamIndex].reserve = player;
                     }
                     saveTeams();
+                    // Update dropdown options to exclude selected player
+                    updateDropdowns();
                 }
             });
         });
+
+        // Function to update dropdown options
+        function updateDropdowns() {
+            selects.forEach(select => {
+                const currentValue = select.value;
+                select.innerHTML = `
+                    <option value="">Select Player</option>
+                    ${availablePlayers
+                        .filter(p => !teams.flatMap(t => [...t.players, t.reserve]).includes(p) || p === currentValue)
+                        .map(p => `<option value="${p}" ${p === currentValue ? "selected" : ""}>${p}</option>`)
+                        .join("")}
+                `;
+            });
+        }
 
         finalizeButton.style.display = "block";
     });
