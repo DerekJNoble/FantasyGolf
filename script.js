@@ -7780,8 +7780,8 @@ function updateTeamName(index, newName) {
 
 // Sportradar API configuration (replace with your credentials)
 const API_KEY = "wiaNv3mo28nTGdaxI1gPtWYT7xs78MhkyVKUv4KG";
-const TOURNAMENT_ID = "680ab97b-627d-4e61-81e6-32dfbbc73e14";
-const API_URL = `https://api.sportradar.com/golf/tournaments/${680ab97b-627d-4e61-81e6-32dfbbc73e14}/leaderboard.json?api_key=${wiaNv3mo28nTGdaxI1gPtWYT7xs78MhkyVKUv4KG}`;
+const TOURNAMENT_ID = "2eadcc26-4378-4d53-bd0a-f73962983137";
+const API_URL = `https://api.sportradar.com/golf/tournaments/${2eadcc26-4378-4d53-bd0a-f73962983137}/leaderboard.json?api_key=${wiaNv3mo28nTGdaxI1gPtWYT7xs78MhkyVKUv4KG}`;
 
 // Fetch and update live results (index.html)
 async function updateResults() {
